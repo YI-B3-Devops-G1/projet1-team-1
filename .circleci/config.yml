@@ -5,6 +5,7 @@
 version: 2
 jobs:
   push:
+    executor: win/default
     steps:
       - run: echo "A push is triggered"
 
