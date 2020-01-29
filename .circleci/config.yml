@@ -10,12 +10,12 @@ executors:
 
 jobs:
   push:
-    executors: docker-runner
+    executor: docker-runner
     steps:
       - run: echo "A change occurs"
   
   install:
-    executors: docker-runner
+    executor: docker-runner
     steps:
       - checkout
       - setup_remote_docker
