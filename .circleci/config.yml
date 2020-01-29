@@ -5,6 +5,8 @@
 version: 2
 executors:
   docker-runner:
+    environment:
+      PROJECT_NAME: Projet1-Team-1
     docker:
       - image: circleci/buildpack-deps:stretch
 
@@ -25,3 +27,18 @@ jobs:
       - run:
           name: up infra
           command: docker-compose up
+
+workflows:
+version: 2
+build:
+  jobs:
+    - push:
+      filters:
+        branches:
+          only: master
+    - install:
+      requires:
+        - push
+      filters:
+        branches:
+          only: master
