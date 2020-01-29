@@ -32,7 +32,7 @@ workflows:
   version: 2
   build-infra:
     jobs:
-      - push:
+      - push
       - install:
           requires:
             - push
