@@ -4,6 +4,7 @@
 #
 version: 2
 jobs:
+  -push
   build:
     docker:
       # specify the version you desire here
