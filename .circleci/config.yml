@@ -4,9 +4,10 @@
 #
 version: 2
 jobs:
-  push:
+  - push:
     steps:
-      run: echo "A push is triggered"
+      - run: echo "A push is triggered"
+
   build:
     docker:
       # specify the version you desire here
