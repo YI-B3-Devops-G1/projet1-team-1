@@ -51,6 +51,3 @@ services:
     image: redis
     container_name: redis
     restart: on-failure
-
-volumes:
-    pgdata
