@@ -53,5 +53,4 @@ services:
     restart: on-failure
 
 volumes:
-    pgdata:
-        external: true
+    pgdata
