@@ -29,16 +29,10 @@ jobs:
           command: docker-compose up
 
 workflows:
-version: 2
-build:
-  jobs:
-    - push:
-      filters:
-        branches:
-          only: master
-    - install:
-      requires:
-        - push
-      filters:
-        branches:
-          only: master
+  version: 2
+  build:
+    jobs:
+      - push:
+      - install:
+        requires:
+          - push
