@@ -33,6 +33,6 @@ workflows:
   build-infra:
     jobs:
       - push
-      - install:
+      - install
           requires:
             - push
