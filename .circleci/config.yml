@@ -37,10 +37,10 @@ jobs:
       - setup_remote_docker
       - run: 
           name: Build Docker Image
-          command: docker build -t  ${PROJECT_NAME}:latest .
-      # - run:
-      #     name: Archive Image
-      #     command: docker save -o ./image.tar ${PROJECT_NAME}:latest
+          command: docker build -t api .
+      - run:
+          name: Tag Image
+          command: docker tag api ${DH_USERNAME}/${PROJECT_NAME}:latest
       - run:
           name: Connect to dockerhub
           command: docker login --username=${DH_USERNAME} --password=${DH_PASSWORD}
