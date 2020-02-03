@@ -13,7 +13,7 @@ executors:
       - image: redis
   docker-publisher:
     environment:
-      PROJECT_NAME: Projet1-Team-1
+      PROJECT_NAME: projet1-team-1
     docker:
       - image: circleci/buildpack-deps:stretch
 
