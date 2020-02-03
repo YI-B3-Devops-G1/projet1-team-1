@@ -8,31 +8,55 @@ executors:
     environment:
       PROJECT_NAME: Projet1-Team-1
     docker:
+      - image: circleci/node:12.13.0
+      - image: postgres
+      - image: redis
+  docker-publisher:
+    environment:
+      PROJECT_NAME: Projet1-Team-1
+    docker:
       - image: circleci/buildpack-deps:stretch
 
 jobs:
-  push:
-    executor: docker-runner
-    steps:
-      - run: echo "A change occurs"
-  
   install:
     executor: docker-runner
     steps:
       - checkout
+      - run:
+          name: install package
+          command: npm ci
+  test :
+    executor: docker-runner
+    steps:
+      - run: echo "A Test"
+  
+  publish-image :
+    executor: docker-publisher
+    steps:
+      - checkout
       - setup_remote_docker
+      - run: 
+          name: Build Docker Image
+          command: docker build -t  ${PROJECT_NAME}:latest .
+      # - run:
+      #     name: Archive Image
+      #     command: docker save -o ./image.tar ${PROJECT_NAME}:latest
       - run:
-          name: Build infra
-          command: docker-compose build
-      - run:
-          name: up infra
-          command: docker-compose up
+          name: Connect to dockerhub
+          command: docker login --username=${DH_USERNAME} --email=${DH_EMAIL} --password=${DH_PASSWORD}
+      -run:
+          name: Push on dockerhub
+          command: docker push ${DH_USERNAME}/${PROJECT_NAME}:latest
+
 
 workflows:
   version: 2
   build-infra:
     jobs:
-      - push
       - install:
+      - test:
           requires:
-            - push
+            install
+      - publish-image:
+          requires:
+            test
