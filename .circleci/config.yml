@@ -44,7 +44,7 @@ jobs:
       - run:
           name: Connect to dockerhub
           command: docker login --username=${DH_USERNAME} --email=${DH_EMAIL} --password=${DH_PASSWORD}
-      -run:
+      - run:
           name: Push on dockerhub
           command: docker push ${DH_USERNAME}/${PROJECT_NAME}:latest
 
