@@ -43,7 +43,7 @@ jobs:
       #     command: docker save -o ./image.tar ${PROJECT_NAME}:latest
       - run:
           name: Connect to dockerhub
-          command: docker login --username=${DH_USERNAME} --email=${DH_EMAIL} --password=${DH_PASSWORD}
+          command: docker login --username=${DH_USERNAME} --password=${DH_PASSWORD}
       - run:
           name: Push on dockerhub
           command: docker push ${DH_USERNAME}/${PROJECT_NAME}:latest
