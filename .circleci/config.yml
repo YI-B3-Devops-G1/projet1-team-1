@@ -56,7 +56,7 @@ workflows:
       - install
       - test:
           requires:
-            install
+            - install
       - publish-image:
           requires:
-            test
+            - test
