@@ -13,6 +13,10 @@ aliases:
         ignore: /.*/
       tags:
         only: /v[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/
+  - &notify_fail
+        name: Notify job fail
+        command: curl --data "content= error on build ${CIRCLE_BUILD_NUM}" -X POST https://discordapp.com/api/webhooks/674219936931119124/LT4WVNgyN3-aW2p8oiskMhU6kNAgy9ZxrC76N_uYSzafScwAZ3SNX_aMHeHrQVEgWxlC
+        when: on_fail
 
 version: 2.1
 executors:
@@ -89,6 +93,14 @@ jobs:
       - run:
           name: Push on dockerhub
           command: docker push ${DH_USERNAME}/${PROJECT_NAME}:${CIRCLE_TAG}
+  build-success :
+    executor: docker-publisher
+    steps:
+      - run: 
+          name: Notify success
+          command: curl --data "content=build success ${CIRCLE_BUILD_NUM}" -X POST https://discordapp.com/api/webhooks/674219936931119124/LT4WVNgyN3-aW2p8oiskMhU6kNAgy9ZxrC76N_uYSzafScwAZ3SNX_aMHeHrQVEgWxlC
+          
+          
 
 workflows:
   version: 2
@@ -104,6 +116,10 @@ workflows:
           filters: *dev-filter
           requires:
             - test
+      - build-success:
+          filters: *dev-filter
+          requires:
+            - publish-image-dev
 
   build-infra-prod:
     jobs:
@@ -117,3 +133,7 @@ workflows:
           filters: *prod-filter
           requires:
             - test
+      - build-success:
+          filters: *prod-filter
+          requires:
+            - publish-image-prod
