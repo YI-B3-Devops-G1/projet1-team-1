@@ -39,25 +39,3 @@ publish image on **DockerHub** with build number as _tag_
 
 - **publish-image-prod**      
 publish released image on **DockerHub** with version as _tag_ (vXXX.YYY.ZZZ)
-
-#### Docker compose 
-
-Different services : 
-
-- **reverseproxy**    
-service who contains `nginx`    
-listening on port `3000`    
-depends on _api_    
-
-- **api**   
-service who contains `node`   
-depends on _postgres_ & _redis_         
-
-- **postgres**  
-service who contains `postgres`       
-listening on port `5432`    
-depends on _redis_    
-test username `admin` and test password `admin`     
-
-- **redis**  
-service who contains `redis`
