@@ -3,16 +3,19 @@
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
 aliases:
+  # Filters for dev workflow
   - &dev-filter
       branches:
         only: /.*/
       tags:
         ignore: /.*/
+  # Filters for prod workflow
   - &prod-filter
       branches:
         ignore: /.*/
       tags:
         only: /v[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/
+  # Notify when build fail on a channel discord
   - &notify_fail
         name: Notify job fail
         command: curl --data "content= error on build ${CIRCLE_BUILD_URL}" -X POST https://discordapp.com/api/webhooks/674219936931119124/LT4WVNgyN3-aW2p8oiskMhU6kNAgy9ZxrC76N_uYSzafScwAZ3SNX_aMHeHrQVEgWxlC
@@ -20,6 +23,7 @@ aliases:
 
 version: 2.1
 executors:
+  # Executor for install and test the application
   docker-runner:
     environment:
       PROJECT_NAME: Projet1-Team-1
@@ -27,6 +31,8 @@ executors:
       - image: circleci/node:12.13.0
       - image: postgres
       - image: redis
+
+  # Executor for build and publish image
   docker-publisher:
     environment:
       PROJECT_NAME: projet1-team-1
@@ -34,6 +40,7 @@ executors:
       - image: circleci/buildpack-deps:stretch
 
 jobs:
+  # Install npm packages
   install:
     executor: docker-runner
     steps:
@@ -41,26 +48,29 @@ jobs:
       - run:
           name: install package
           command: npm ci
-      - persist_to_workspace:
+      - persist_to_workspace: # Persist over jobs node_modules
           root: .
           paths:
             - ./node_modules
       - run : *notify_fail
+
+  # Test application
   test :
     executor: docker-runner
     steps:
       - checkout
-      - attach_workspace:
+      - attach_workspace: 
           at: /tmp/workspace
       - run:
           name: Copy node_modules
-          command: cp -r /tmp/workspace/node_modules ./node_modules
+          command: cp -r /tmp/workspace/node_modules ./node_modules # Copy node_modules in app folder
       - run: npm test
-      - store_artifacts:
+      - store_artifacts:  # Export test result by artifacts
           path: test-result.txt
           destination: test-result
       - run: *notify_fail
   
+  # Publish on docker hub an image. Image take build number for tag
   publish-image-dev :
     executor: docker-publisher
     steps:
@@ -68,17 +78,19 @@ jobs:
       - setup_remote_docker
       - run: 
           name: Build Docker Image
-          command: docker build -t api .
+          command: docker build -t api . # Build image from Dockerfile
       - run:
           name: Tag Image
-          command: docker tag api ${DH_USERNAME}/${PROJECT_NAME}:${CIRCLE_BUILD_NUM}
+          command: docker tag api ${DH_USERNAME}/${PROJECT_NAME}:${CIRCLE_BUILD_NUM} # Tag image with git tag of commit
       - run:
           name: Connect to dockerhub
           command: docker login --username=${DH_USERNAME} --password=${DH_PASSWORD}
       - run:
           name: Push on dockerhub
-          command: docker push ${DH_USERNAME}/${PROJECT_NAME}:${CIRCLE_BUILD_NUM}
+          command: docker push ${DH_USERNAME}/${PROJECT_NAME}:${CIRCLE_BUILD_NUM} # Push image
       - run: *notify_fail
+
+  # Publish on docker hub an image for a release. Image take tag of release
   publish-image-prod :
     executor: docker-publisher
     steps:
@@ -86,16 +98,18 @@ jobs:
       - setup_remote_docker
       - run: 
           name: Build Docker Image
-          command: docker build -t api .
+          command: docker build -t api . # Build image from Dockerfile
       - run:
           name: Tag Image
-          command: docker tag api ${DH_USERNAME}/${PROJECT_NAME}:${CIRCLE_TAG}
+          command: docker tag api ${DH_USERNAME}/${PROJECT_NAME}:${CIRCLE_TAG} # Tag image with git tag of commit
       - run:
           name: Connect to dockerhub
           command: docker login --username=${DH_USERNAME} --password=${DH_PASSWORD}
       - run:
           name: Push on dockerhub
-          command: docker push ${DH_USERNAME}/${PROJECT_NAME}:${CIRCLE_TAG}
+          command: docker push ${DH_USERNAME}/${PROJECT_NAME}:${CIRCLE_TAG} # Push image
+
+  # Notify when build success on a channel discord
   build-success :
     executor: docker-publisher
     steps:
