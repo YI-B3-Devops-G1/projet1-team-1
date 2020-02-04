@@ -40,13 +40,13 @@ jobs:
           command: docker build -t api .
       - run:
           name: Tag Image
-          command: docker tag api ${DH_USERNAME}/${PROJECT_NAME}:${CIRCLE_TAG}
+          command: docker tag api ${DH_USERNAME}/${PROJECT_NAME}:${CIRCLE_TAG/v/''}
       - run:
           name: Connect to dockerhub
           command: docker login --username=${DH_USERNAME} --password=${DH_PASSWORD}
       - run:
           name: Push on dockerhub
-          command: docker push ${DH_USERNAME}/${PROJECT_NAME}:${CIRCLE_TAG}
+          command: docker push ${DH_USERNAME}/${PROJECT_NAME}:${CIRCLE_TAG/v/''}
 
 
 workflows:
