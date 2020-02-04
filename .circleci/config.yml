@@ -40,7 +40,10 @@ jobs:
   test :
     executor: docker-runner
     steps:
-      - run: echo "A Test"
+      - run: npm test
+      - store_artifacts:
+          path: test-result.txt
+          destination: test-result-${CIRCLE_BUILD_NUM}
   
   publish-image-dev :
     executor: docker-publisher
