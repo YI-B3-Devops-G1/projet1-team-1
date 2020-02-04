@@ -42,6 +42,8 @@ publish released image on **DockerHub** with version as _tag_ (vXXX.YYY.ZZZ)
 
 #### Docker compose 
 
+Different services : 
+
 - **reverseproxy**    
 service who contains `nginx`    
 listening on port `3000`    
