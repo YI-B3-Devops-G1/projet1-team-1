@@ -1,6 +1,6 @@
 {
   "name": "tp2_gontard_antinea",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "**mail**: antinea.gontard@ynov.com",
   "main": "api.js",
   "dependencies": {
