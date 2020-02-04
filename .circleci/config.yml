@@ -52,7 +52,7 @@ jobs:
           command: docker build -t api .
       - run:
           name: Tag Image
-          command: docker build -t api ${DH_USERNAME}/${PROJECT_NAME}:${CIRCLE_BUILD_NUM} .
+          command: docker tag api ${DH_USERNAME}/${PROJECT_NAME}:${CIRCLE_BUILD_NUM}
       - run:
           name: Connect to dockerhub
           command: docker login --username=${DH_USERNAME} --password=${DH_PASSWORD}
@@ -69,7 +69,7 @@ jobs:
           command: docker build -t api .
       - run:
           name: Tag Image
-          command: docker build -t api ${DH_USERNAME}/${PROJECT_NAME}:${CIRCLE_TAG} .
+          command: docker tag api ${DH_USERNAME}/${PROJECT_NAME}:${CIRCLE_TAG}
       - run:
           name: Connect to dockerhub
           command: docker login --username=${DH_USERNAME} --password=${DH_PASSWORD}
