@@ -18,24 +18,26 @@ Team 1
 
 ## DockerHub
 
-[Lien vers le repo DockerHub](https://hub.docker.com/repository/docker/dockeranti/projet1-team-1)
+[Link to DockerHub's repository](https://hub.docker.com/repository/docker/dockeranti/projet1-team-1)
 
 --- 
 
-## Projet 
+## Project 
 
-#### Configuration circleci
+#### Circleci configuration
 
 Different jobs : 
 
-- **install** 
+- **install**    
 install npm packages 
 
-- **test** 
+- **test**     
 contains all the tests that we want to try and do an export to `circleci artifacts` and `discord` 
 
-- **publish-image-dev**
-publish image on **DockerHub**
+- **publish-image-dev**     
+publish image on **DockerHub** with build number as _tag_
 
-- **publish-image-prod**
-publish released image on **DockerHub**
+- **publish-image-prod**      
+publish released image on **DockerHub** with version as _tag_ (vXXX.YYY.ZZZ)
+
+#### 
