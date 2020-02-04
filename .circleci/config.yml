@@ -59,7 +59,7 @@ jobs:
     executor: docker-runner
     steps:
       - checkout
-      - attach_workspace: 
+      - attach_workspace:
           at: /tmp/workspace
       - run:
           name: Copy node_modules
@@ -69,14 +69,14 @@ jobs:
           path: test-result.txt
           destination: test-result
       - run: *notify_fail
-  
+
   # Publish on docker hub an image. Image take build number for tag
   publish-image-dev :
     executor: docker-publisher
     steps:
       - checkout
       - setup_remote_docker
-      - run: 
+      - run:
           name: Build Docker Image
           command: docker build -t api . # Build image from Dockerfile
       - run:
@@ -96,7 +96,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run: 
+      - run:
           name: Build Docker Image
           command: docker build -t api . # Build image from Dockerfile
       - run:
@@ -113,12 +113,10 @@ jobs:
   build-success :
     executor: docker-publisher
     steps:
-      - run: 
+      - run:
           name: Notify success
           command: curl --data "content=build success ${CIRCLE_BUILD_URL}" -X POST https://discordapp.com/api/webhooks/674219936931119124/LT4WVNgyN3-aW2p8oiskMhU6kNAgy9ZxrC76N_uYSzafScwAZ3SNX_aMHeHrQVEgWxlC
-          
-          
-
+  
 workflows:
   version: 2
   build-infra-dev:
@@ -126,7 +124,7 @@ workflows:
       - install:
           filters: *dev-filter
       - test:
-          filters: *dev-filter  
+          filters: *dev-filter
           requires:
             - install
       - publish-image-dev:

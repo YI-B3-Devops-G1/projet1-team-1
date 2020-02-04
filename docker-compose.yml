@@ -13,8 +13,8 @@ services:
     restart: on-failure
     ports:
       - 3000:3000 # HOST:CLIENT
-  
-  # API container
+
+  # Node API container
   api:
     build:
       context: .
@@ -33,8 +33,8 @@ services:
       - DB_PASSWORD=admin
       - REDIS_HOST=redis  # Redis Container name
     restart: on-failure
-   
-  # Postgres container 
+
+  # Postgres container
   postgres:
     image: postgres
     depends_on:
@@ -49,13 +49,13 @@ services:
     restart: on-failure
     volumes:
       - pgdata:/data/postgres
-  
-  # Redis container 
+
+  # Redis container
   redis:
     image: redis
     container_name: redis
     restart: on-failure
 
-# Volume for postgres 
+# Volume for postgres
 volumes:
     pgdata:
