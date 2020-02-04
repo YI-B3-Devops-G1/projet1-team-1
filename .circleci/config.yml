@@ -37,14 +37,23 @@ jobs:
       - run:
           name: install package
           command: npm ci
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./node_modules
   test :
     executor: docker-runner
     steps:
       - checkout
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          name: Copy node_modules
+          command: cp -r /tmp/workspace/node_modules ./node_modules
       - run: npm test
       - store_artifacts:
           path: test-result.txt
-          destination: test-result-${CIRCLE_BUILD_NUM}
+          destination: test-result
   
   publish-image-dev :
     executor: docker-publisher
