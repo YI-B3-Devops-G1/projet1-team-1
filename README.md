@@ -42,6 +42,7 @@ publish released image on **DockerHub** with version as _tag_ (vXXX.YYY.ZZZ)
 
 ### Deploy
 **Application**
+
 To get only the application
 
   - In you docker-compose.yml file, get the image of the application from Dockerhub (You can find all versions in our [repository](https://hub.docker.com/repository/docker/dockeranti/projet1-team-1)
@@ -52,13 +53,9 @@ To get only the application
   
   
 **Full solution**
+
 To create all containers (nginx, the application and database) and have a fully solution 
 
   - Clone repository
   - In project folder, run ```docker-compose up```
   - All the containers are now created 
-
-
-
-
-
